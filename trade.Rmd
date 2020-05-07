@@ -1,0 +1,57 @@
+---
+title: "trade"
+author: "Pat Healy"
+date: "7 May 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Some notes for Donna about the comtradr API for technology/electonic equipment. 
+
+-Install the package comtradr
+```{r}
+library(comtradr)
+```
+
+Find information about the codes at "https://unstats.un.org/unsd/tradekb/Knowledgebase/50039/UN-Comtrade-Reference-Tables"
+
+For this example we were interested in: 
+"Electrical machinery and equipment and parts thereof; sound recorders and reproducers; television image and sound recorders and reproducers, parts and accessories of such articles as a commodity. "
+
+The code for this is "85"
+To find the EU trade partners we get a list of EU countries from:
+https://europa.eu/european-union/about-eu/countries_en
+
+*note* The limit to trade parnters that can be queried at the same time is 5. We therefore have to split this list up into 5 lists. 
+
+to do that we can iterate over the list below 6 times and create a function to run each list. If you get the stage of needing to do that let me know!
+```{r}
+#Creating eu countries as a character vector
+eu<- c("Austria",	"Italy",
+"Belgium",	"Latvia",
+"Bulgaria",	"Lithuania",
+"Croatia",	"Luxembourg",
+"Cyprus",	"Malta",
+"Czechia",	"Netherlands",
+"Denmark",	"Poland",
+"Estonia",	"Portugal",
+"Finland",	"Romania",
+"France",	"Slovakia",
+"Germany",	"Slovenia",
+"Greece",	"Spain",
+"Hungary",	"Sweden",
+"Ireland"	)
+```
+
+
+```{r}
+#this code searches for electronic equipment traded between USA and France, with export, import and re-export as the trae categories. This includes all years dating back until 1991. 
+code <- c("85")
+df <- ct_search(reporters = "USA", 
+               partners = c("France"), 
+               trade_direction = "all", 
+               commod_codes = code)
+```
+
