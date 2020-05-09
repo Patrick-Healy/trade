@@ -65,7 +65,7 @@ AIR_VAL_YR  '15-digit Year-to-Date Air Value'
 ```{r}
 hitech<- getCensus(name = "timeseries/intltrade/exports/hitech",
     vars = c("HITECH_DESC", "CTY_CODE", "VES_VAL_YR", "AIR_VAL_YR"),
-    time = 2015)
+    time = 2020)
 ```
 
 
