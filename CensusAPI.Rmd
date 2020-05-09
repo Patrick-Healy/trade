@@ -1,0 +1,84 @@
+---
+title: "U.S.Census"
+author: "Pat Healy"
+date: "9 May 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#Steps that we want to take
+1)Load our API Key
+
+2)Load the census package
+
+3)Query 'hitech' data to see what variables we want to use.
+The information for hitech is at https://api.census.gov/data.html
+You might be interested in U.S. Exports by Advanced Technology Code
+The API query for advanced technology is 'timeseries/intltrade/exports/hitech'
+
+4) Add those varialbes into a query
+
+5) Find out what euro countries we can query 
+
+
+
+
+```{r}
+# Add key to .Renviron
+#Sys.setenv(CENSUS_KEY=YOURKEYHERE)
+# Reload .Renviron
+#readRenviron("~/.Renviron")
+# Check to see that the expected key is output in your R console
+#Sys.getenv("CENSUS_KEY")
+```
+
+
+```{r}
+library(censusapi)
+```
+
+```{r}
+apis <- listCensusApis()
+View(apis)
+```
+
+```{r}
+trade_vars <- listCensusMetadata(name = "timeseries/intltrade/exports/hitech", 
+    type = "variables")
+head(trade_vars)
+```
+Variables that may be of interest:
+
+COMM_LVL  '4-character Aggregation Levels for Commodity'
+YEAR  '4-character Year'
+CTY_NAME  '50-character Country Name'
+HITECH_DESC '40-character Hi-Tech Description'
+HITECH  '2-character HITECH Code'
+CTY_CODE '4-character Country Code'
+VES_VAL_YR '15-digit Year-to-Date Vessel Value'
+AIR_VAL_YR  '15-digit Year-to-Date Air Value'
+
+##Successful Query!!
+
+```{r}
+hitech<- getCensus(name = "timeseries/intltrade/exports/hitech",
+    vars = c("HITECH_DESC", "CTY_CODE", "VES_VAL_YR", "AIR_VAL_YR"),
+    time = 2015)
+```
+
+
+#how to search for apis with a keyword that you want in the list of API's
+Try out different version of capitals as well. alternativley you can make evrything lower case. 
+```{r}
+library(dplyr)
+library(data.table)
+trial <- apis[apis$title %like% "Tech", ]
+
+#this gives us two results Exports and Imports
+
+
+```
+
+
